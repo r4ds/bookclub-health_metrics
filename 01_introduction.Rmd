@@ -2,12 +2,50 @@
 
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+- Structure of the Book
+- Main Objectives
+- How to use the book
 
-## SLIDE 1 {-}
+## Overview {-}
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+This book is designed to provide a comprehensive introduction to the field of health data and metrics. It is intended for learners who are new to the field and want to learn the basics of these type of metrics. The book is divided into 16 chapters plus an introduction, each of which covers a different aspect of health data science. The book covers a wide range of topics, including data visualization, data wrangling, machine learning, and more. Each chapter includes a mix of theoretical concepts and practical examples to help you understand the material.
+
+- A guide to health metrics and infectious disease modeling
+- Focuses on data-driven approaches, including machine learning and spatial analysis
+- Provides step-by-step explanations of health metrics such as DALYs, YLLs, and YLDs
+- Uses real-world case studies (e.g., COVID-19 and Malaria) to demonstrate applications
+
+
+
+
+
+## Structure of the Book {-}
+
+The book is divided into 16 chapters, each of which covers a different aspect of health metrics, infectious diseases, and modeling. The chapters are organized as follows:
+
+1.	Introduction to Health Metrics – Definitions, calculations, and comparisons
+2.	Machine Learning Applications – Models, predictive analytics, and feature engineering
+3.	Data Visualization and Spatial Modeling – Creating insightful visualizations using R
+4.	Case Studies on Infectious Diseases – Applying models to real-world outbreaks
+	
+## Main Objectives {-}
+
+The main objectives of the book are to:
+
+- Teach data analysis techniques to assess public health trends
+- Introduce machine learning for predicting infectious disease spread
+- Demonstrate spatial mapping for epidemiological insights
+- Provide reproducible R code through the {hmsidwR} package for hands-on learning
+
+## How to use the book {-}
+
+The book is designed to be used as a self-study guide. Each chapter includes a mix of theoretical concepts and practical examples to help you understand the material. You can read the book from start to finish or jump to specific chapters based on your interests. The book also includes exercises and quizzes to help you test your understanding of the material. You can use the book on its own or in conjunction with other resources to deepen your knowledge of data science.
+
+- Follow along with R code examples for hands-on practice
+- Use the {hmsidwR} package for preloaded datasets and custom functions
+- Apply machine learning models to predict health outcomes
+- Leverage visualizations and spatial analysis to gain deeper insights into disease transmission
+
 
 ## Meeting Videos {-}
 
