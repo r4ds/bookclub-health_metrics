@@ -1,5 +1,5 @@
-# DSLC Health Metrics and the Spread of Infectious Diseases:
-## Machine Learning Applications and Spatial Modelling Analysis with R Book Club
+# DSLC Book Club: Health Metrics and the Spread of Infectious Diseases:
+## Machine Learning Applications and Spatial Modelling Analysis with R
 
 Welcome to the DSLC Health Metrics and the Spread of Infectious Diseases Machine Learning Applications and Spatial Modelling Analysis with R Book Club!
 
