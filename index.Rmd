@@ -1,6 +1,6 @@
 ---
-title: "Health Metrics and the Spread of Infectious Diseases"
-subtitle: "Machine Learning Applications and Spatial Modelling Analysis with R Book Club"
+title: "Health Metrics and the Spread of Infectious Diseases Book Club"
+subtitle: "Machine Learning Applications and Spatial Modelling Analysis with R"
 author: "The Data Science Learning Community"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
