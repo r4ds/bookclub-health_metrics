@@ -10,5 +10,6 @@ Depends:
 Imports: 
     bookdown,
     DiagrammeR,
+    hmsidwR,
     rmarkdown
 Encoding: UTF-8
