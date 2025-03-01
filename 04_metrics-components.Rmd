@@ -1,13 +1,82 @@
 # Metrics Components
 
-**Learning objectives:**
+## Introduction {-}
+- Last week: Methods and Calculations
+- This week: Metrics Components
+- Specifically: life expectancy, mortality rates, incidence and prevalence and disability weights
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+## Cause-specific or Population-wide {-}
+- The metric components are the building blocks for analyses
+- We need to tailor and select them to meet the needs of our analysis
+- There are different variations of the metrics
+  - Cause-specific => looking at specific disease and intervention
+  - Population-wide => health policy changes
+  - Many factors to include (age, sex, disease, location, point in time vs cumulative)
 
-## SLIDE 1 {-}
+## Life tables and Life expectancy (Motivation) {-}
+- We need life expectancy to calculate YLLs
+- We use life tables to calculate life expectancy
+- We use expected life remaining at age *x* (*ex*) rather than life expectancy from birth (*le*)
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+## Life tables (Example data) {-}
+- Global Health Observatory Life Tables are included in the hmsidwR package
+
+```{r, message = FALSE}
+library(tidyverse)
+library(hmsidwR)
+library(knitr)
+gho_2000 <- gho_lifetables %>%
+  filter(sex == "both", year == 2000 ) %>% 
+  select(-sex,-year)
+
+gho_2000_wide <- gho_2000 %>% 
+  pivot_wider(names_from = indicator, values_from = value) %>% 
+  select(age,lx,nLx,Tx,ex) 
+
+kable(gho_2000_wide)
+```
+
+## Life expectancy calculation {-}
+- ex = Tx/lx
+- Tx is the total number of person-years lived by the cohort from age x until all members of the cohort have died (look back at previous slide)
+- That is sum(nLx) from the row for age x to the last row in the table
+- For the exercise, Tx = 2,370,099 and lx = 89,867. So, ex = 26.4 years
+
+## Mortality level and rates {-}
+- Crude Mortality Rate = (Number of deaths/Total population)*100000
+- Other types include: age-specific mortality rate, cause-specific mortality rate, infant mortality rate and maternal mortality rate
+- We can use ranges of mortality rates to create simulations to estimate deaths
+
+## Incidence and Prevalence {-}
+- Incidence is the number of cases **developed** during a specific time period
+- Prevalence is the number of cases **in the population** (new and existing) during a specific time period
+- Prevalence is used in the calculation of DALYs to measure the current impact
+- The first example calculates YLD using prevalence.
+- The second example simulates incidence and prevalence using Poisson distributions to simulate the new cases and recovery
+
+## Disability Weights and Severity Levels {-}
+- Disability weights range from 0 to 1 based on severity 0 being no disability and 1 being equivalent to death
+- There are different methods to compute or assign disability weights
+- Global Burden of Disease study is one of the most thorough and extensive projects estimating disability weights
+- These weights are available in hmsidwR
+```{r, message = FALSE}
+library(tidyverse)
+library(hmsidwR)
+library(knitr)
+disability_weights <- hmsidwR::disweights
+
+select_dws <- disability_weights %>%
+  filter(year == 2019, sequela == 'Mild early syphilis infection') %>%
+  select(sequela, dw, upper, lower) %>% 
+  head()
+
+kable(select_dws)
+```
+
+## Summary of DALYs' Components {-}
+- YLLs Components: Age at death, Life expectancy, Standard life expectancy, Population size, Cause of death
+- YLDs Components: Prevalence and Incidence, Disability weights, Age, Population size, and Duration of disability
+- DALYs Components: Both YLLs and YLDs
 
 ## Meeting Videos {-}
 
