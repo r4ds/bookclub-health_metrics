@@ -2,8 +2,6 @@
 
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
-
 ## Introduction {-}
 - Last week: Methods and Calculations
 - This week: Metrics Components
