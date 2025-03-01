@@ -1,7 +1,5 @@
 # Metrics Components
 
-**Learning objectives:**
-
 ## Introduction {-}
 - Last week: Methods and Calculations
 - This week: Metrics Components
