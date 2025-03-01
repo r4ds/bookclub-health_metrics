@@ -11,5 +11,6 @@ Imports:
     bookdown,
     DiagrammeR,
     hmsidwR,
-    rmarkdown
+    rmarkdown,
+    tidyverse
 Encoding: UTF-8
