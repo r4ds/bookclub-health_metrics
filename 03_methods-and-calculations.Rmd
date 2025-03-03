@@ -2,23 +2,193 @@
 
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+-   To be able to calculate:
+    -   YLL (Years of Life Lost) and
+    -   YDD (Years lived with disability)
 
-## SLIDE 1 {-}
+## Chapter 2 Recap {.unnumbered}
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+[Table 2.1: Health Metrics Overview from Chap 2](https://fgazzelloni.quarto.pub/01-health_metrics.html#tbl-health_metrics)
 
-## Meeting Videos {-}
++----------------------------------------------+--------------------------------------------------------------------------------------------+-----------------------------------------------------------------+-----------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------+
+| Metric                                       | Purpose                                                                                    | Focus                                                           | Usage                                                                                         | Calculation                                                                                             |
++:=============================================+:===========================================================================================+:================================================================+:==============================================================================================+:========================================================================================================+
+| QALY (Quality-Adjusted Life Year)            | Measures health benefits of interventions by combining quantity and quality of life gained | Health gains from interventions                                 | Used in cost-effectiveness studies, healthcare resource allocation, and insurance             | Calculated by adjusting life years gained for quality of life (e.g., 1 year at half quality = 0.5 QALY) |
++----------------------------------------------+--------------------------------------------------------------------------------------------+-----------------------------------------------------------------+-----------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------+
+| DALY (Disability-Adjusted Life Year)         | Measures burden of disease by capturing premature death and disability impact              | Health loss due to disease and disability                       | Used in public health to understand and compare disease burden globally                       | Calculated by summing years of life lost (YLL) and years lived with disability (YLD)                    |
++----------------------------------------------+--------------------------------------------------------------------------------------------+-----------------------------------------------------------------+-----------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------+
+| HALY (Health-Adjusted Life Year)             | General measure combining health quantity and quality; similar to QALY but less common     | Health gains or losses from interventions or disease impact     | Used similarly to QALY, though less frequently in decision-making                             | Calculated by adjusting life years for health quality; similar to QALY                                  |
++----------------------------------------------+--------------------------------------------------------------------------------------------+-----------------------------------------------------------------+-----------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------+
+| HALE (Healthy Life Expectancy)               | Estimates life expectancy in ‘healthy’ years, adjusting for disability and illness         | Overall healthy life expectancy at a population level           | Primarily used in population health and public health reports for health expectancy           | Calculated by adjusting total life expectancy based on age-specific disability prevalence               |
++----------------------------------------------+--------------------------------------------------------------------------------------------+-----------------------------------------------------------------+-----------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------+
+| HLY (Health Life Years)                      | Measures the additional healthy years expected, often from a specific age like 65          | Healthy life expectancy focused on ageing populations           | Used in geriatric health assessments and interventions for ageing populations                 | Typically calculated by estimating additional years of good health beyond a baseline age                |
++----------------------------------------------+--------------------------------------------------------------------------------------------+-----------------------------------------------------------------+-----------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------+
+| WAHE (Well-being Adjusted Health Expectancy) | Incorporates both physical and subjective well-being for life expectancy in ‘full health’  | Overall well-being and mental health as well as physical health | Applicable for holistic health assessments, incorporating quality of life and mental wellness | Calculated by weighting health states to reflect impact on well-being and quality of life               |
++----------------------------------------------+--------------------------------------------------------------------------------------------+-----------------------------------------------------------------+-----------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------+
 
-### Cohort 1 {-}
+## Chapter 3 overview {.unnumbered}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+-   **DALY** = Years of Life Lost (YLL) + Years Lived with Disability (YLD)
+-   **HALE** = Life expectancy - Years Lived with Disability (YLD)
+
+## YLL Calculation {.unnumbered}
+
+-   Measures years lost due to premature death.
+-   Introduced by William Haenszel in the late 1940s.
+-   Formalized by Mary Dempsey in 1947 to assess tuberculosis burden.
+-   **Formula:**
+    -   $YLL = N \cdot le$
+    -   $N$ = Number of premature deaths
+    -   $le$ = Standard life expectancy at current age
+
+## Example: YLLs due to Stroke {.unnumbered}
+
+-   Higher risk of Stroke after infections like COVID-19, TB, and Malaria.
+-   Based on the Global Burden of Disease (GBD) study (2019).
+
+## Example: Setup and Excess Deaths {.unnumbered}
+
+-   **Install and load packages**:
+
+    ``` r
+    #options(repos = c(CRAN = "https://cloud.r-project.org/"))
+    #install.packages("hmsidwR")
+    
+    library(tidyverse)
+    library(hmsidwR)
+    ```
+
+-   **Filter Data**:
+
+    ``` r
+    deaths_stroke <- hmsidwR::deaths2019 |>
+        arrange(age) |>
+        filter(location == "Global", str_detect(cause, "Stroke")) |>
+        select(-location, -cause, -upper, -lower)
+
+    deaths_stroke |> head()
+    ```
+
+## Example: Life Expectancy and YLL calculation {.unnumbered}
+
+-   **Life Expectancies**
+
+``` r
+ex2019 <- hmsidwR::gho_lifetables |>
+  filter(year == 2019, indicator == "ex") |>
+  select(-indicator, -year) |>
+  rename(le = value)
+```
+
+-   **Calculate YLLs:**
+
+``` r
+YLL_global_stroke <- deaths_stroke |>
+  full_join(ex2019) |>
+  group_by(age, sex) |>
+  mutate(YLL = dx * le) |>
+  ungroup()
+
+YLL_global_stroke |> head()
+```
+
+## YLD Calculation {.unnumbered}
+
+-   Measures years lived with disability due to disease or injury.
+-   **Formula:**
+    -   **Incidence-based:** $YLD_i = I \times DW \times L$
+    -   **Prevalence-based:** $YLD_p = P \times DW$
+-   Disability Weights (DW):\*\* Ranges from 0 (full health) to 1 (death), representing severity.
+-   **Challenges in Estimation:**
+    -   Variability in experiences of the same condition.
+    -   Standardizing disability weights across diverse diseases.
+
+## Example: YLDs due to Stroke {.unnumbered}
+
+-   **Prevalence-based Approach:**
+    -   Since GBD 2010, WHO has shifted to a prevalence-based method.
+    -   Ensures more even distribution of YLDs across all age groups.
+-   **Disability Weights (DW):**
+    -   Uses `hmsidwR::disweights` dataset (463 observations, 9 variables).
+
+## Example: Disability Weights & Severity Levels {.unnumbered}
+
+-   **Assumed Proportion of Stroke Severity**
+
+    -   **Mild:** 50.3%
+    -   **Moderate:** 25.3%
+    -   **Severe:** 24.4%
+
+-   **Assigning Severity Proportions:**
+
+    ``` r
+    dwsev2019 <- hmsidwR::disweights |>
+      select(cause1, severity, dw) |>
+      drop_na() |>
+      mutate(severity_n = case_when(
+        severity == "mild" ~ 0.503,
+        severity == "moderate" ~ 0.253,
+        severity == "severe" ~ 0.244))
+    ```
+
+    ``` r
+    dw_stroke <- dwsev2019 |>
+      filter(cause1 == "Stroke") |>
+      group_by(severity, severity_n) |>
+      reframe(avg_dw = mean(dw))
+    ```
+
+## Example: Calculating YLDs for Stroke {.unnumbered}
+
+-   **Obtaining Incidence / Prevalence**
+
+    ``` r
+    inc_prev_stroke_5y <- hmsidwR::incprev_stroke %>%
+      filter(year == 2019) %>%
+      select(measure, sex, age, val) %>%
+      pivot_wider(names_from = "measure", values_from = "val")
+    ```
+
+-   **Prevalence-based YLD Calculation:**
+
+    ``` r
+    YLD_by_severity <- merge(inc_prev_stroke_5y, dw_stroke) |>
+      group_by(sex, age, avg_dw) |>
+      reframe(prev_sev = Prevalence*severity_n,
+              inc_sev = Incidence*severity_n,
+              yld_p = prev_sev * avg_dw,
+              yld_i = inc_sev * avg_dw * 28/365)
+    ```
+
+## Example: Final Calculation of YLDs {.unnumbered}
+
+-   **Final Calculation of Total YLDs:**
+
+    ``` r
+    YLD_global_stroke <- YLD_by_severity |>
+      group_by(sex, age) |>
+      reframe(YLD_p = sum(yld_p),
+              YLD_i = sum(yld_i))
+    ```
+
+## DALY Calculation {.unnumbered}
+
+-   $DALY = YLL + YLD$
+
+[![DALYs due to stroke in the Global Region for males and females](https://fgazzelloni.quarto.pub/02-method_calculation_files/figure-html/fig-DALY_global_stroke-1.png)](https://fgazzelloni.quarto.pub/02-method_calculation.html#fig-DALY_global_stroke-1)
+
+## Meeting Videos {.unnumbered}
+
+### Cohort 1 {.unnumbered}
+
+`r knitr::include_url("https://www.youtube.com/watch?v=s-bKz08WOmQ")`
 
 <details>
-<summary> Meeting chat log </summary>
 
-```
+<summary>Meeting chat log</summary>
+
+```         
 LOG
 ```
+
 </details>
