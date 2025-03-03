@@ -51,8 +51,8 @@
 -   **Install and load packages**:
 
     ``` r
-    options(repos = c(CRAN = "https://cloud.r-project.org/"))
-    install.packages("hmsidwR")
+    #options(repos = c(CRAN = "https://cloud.r-project.org/"))
+    #install.packages("hmsidwR")
     
     library(tidyverse)
     library(hmsidwR)
@@ -175,7 +175,9 @@ YLL_global_stroke |> head()
 
 -   $DALY = YLL + YLD$
 
-[![DALYs due to stroke in the Global Region for males and females](https://fgazzelloni.quarto.pub/02-method_calculation_files/figure-html/fig-DALY_global_stroke-1.png)](https://fgazzelloni.quarto.pub/02-method_calculation.html#fig-DALY_global_stroke-1)Meeting Videos {.unnumbered}
+[![DALYs due to stroke in the Global Region for males and females](https://fgazzelloni.quarto.pub/02-method_calculation_files/figure-html/fig-DALY_global_stroke-1.png)](https://fgazzelloni.quarto.pub/02-method_calculation.html#fig-DALY_global_stroke-1)
+
+## Meeting Videos {.unnumbered}
 
 ### Cohort 1 {.unnumbered}
 
