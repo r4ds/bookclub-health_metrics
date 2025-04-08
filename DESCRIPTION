@@ -9,9 +9,19 @@ Depends:
     R (>= 3.1.0)
 Imports: 
     bookdown,
+    deSolve,
+    DiagrammeR,
+    dials,
+    ggtext,
+    mgcv,
     randomForest,
+    ranger,
     reprtree (>= 0.6),
-    rmarkdown
+    rmarkdown,
+    tidyverse,
+    tidymodels,
+    HistData,
+    INLA (>= 25.3.24)
 Encoding: UTF-8
-Remotes:  
+Remotes: 
     araastat/reprtree
