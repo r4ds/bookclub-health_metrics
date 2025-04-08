@@ -9,5 +9,9 @@ Depends:
     R (>= 3.1.0)
 Imports: 
     bookdown,
+    randomForest,
+    reprtree (>= 0.6),
     rmarkdown
 Encoding: UTF-8
+Remotes:  
+    araastat/reprtree
