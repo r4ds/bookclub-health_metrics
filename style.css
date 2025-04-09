@@ -17,3 +17,8 @@
 .book.font-size-4 .book-body .page-inner section {
   font-size: 3em !important;
 }
+
+.book .book-body .page-wrapper .page-inner section.normal img {
+    border: 0;
+    width: 105%;
+}

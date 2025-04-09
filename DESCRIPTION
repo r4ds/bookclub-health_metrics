@@ -1,5 +1,6 @@
 Package: bookclub-health_metrics
-Title: Health Metrics and the Spread of Infectious Diseases Machine Learning Applications and Spatial Modelling Analysis with R Book Club
+Title: Health Metrics and the Spread of Infectious Diseases Machine
+    Learning Applications and Spatial Modelling Analysis with R Book Club
 Version: 0.0.1
 Authors@R: 
     person("Data Science Learning Community", , , "rfordatasci@gmail.com", role = c("aut", "cre", "cph"))
@@ -9,8 +10,21 @@ Depends:
     R (>= 3.1.0)
 Imports: 
     bookdown,
+    deSolve,
     DiagrammeR,
+    dials,
+    ggtext,
+    HistData,
     hmsidwR,
+    INLA,
+    mgcv,
+    randomForest,
+    ranger,
+    reprtree (>= 0.6),
     rmarkdown,
+    tidymodels,
     tidyverse
+Remotes: 
+    reprtree=araastat/reprtree
+Additional_repositories: https://inla.r-inla-download.org/R/stable
 Encoding: UTF-8
