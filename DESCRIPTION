@@ -16,7 +16,7 @@ Imports:
     ggtext,
     HistData,
     hmsidwR,
-    INLA (>= 25.3.24),
+    INLA,
     mgcv,
     randomForest,
     ranger,
