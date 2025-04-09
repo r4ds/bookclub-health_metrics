@@ -1,13 +1,65 @@
-# Techniques for Machine Learning Applications
+# Techniques for Machine Learning Applications {-}
 
-**Learning objectives:**
+**Learning Objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+- How to manipulate data through feature engineering  
+- Select the most suitable model for your data  
+- Learn about machine learning algorithms  
 
-## SLIDE 1 {-}
+## Goals of the Analysis and Nature of Data {-}
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+### Output is *Continuous* 
+
+- Example: How do explanatory variables such as lifestyle or chronic diagnoses affect LE / DALYs 
+- Traditional **regression models**, including linear regression (OLS), ridge & lasso
+- Coefficient estimates quantify the association between changes in input and changes in outcome.
+
+### Output is *Categorical* or *Binary* 
+
+- Outcome is categorical (e.g., disease/no disease) 
+- Can use logistic regression (more common for *explaining*)
+- Or classification (more common for *predicting*)  
+
+### Systemic Modelling / Simulation
+
+- For complex systems modelled by multiple equations
+- Typically more *predictive*
+- Have a series of equations to fit to data, for example SIR model
+- May wish to change parameters for sensitivity or explore how changes to inputs affects predicted outcome
+
+### Time-Series
+
+- Data has a temporal or seasonal aspect (influenza?)
+- Models like ARIMA can be used to model autocorrelation & trends
+
+## Statistical and Machine Learning Methods {-}
+
+- Several pre-analysis steps are common to many methods
+- Exploratory Data Analysis
+- Feature Engineering / Transforming Variables
+- Centering / Scaling Variables
+
+## Case Study: Predicting Rabies {-}
+
+### Objective: {-}
+
+Predict incidence based on environmental and demographic factors  
+
+### Process: {-}
+
+1. Load and explore structure of data 
+2. Split into train and test sets (consider resampling technique if cross-validating)
+3. Preprocess: scale, normalise, handle missingness, encode, highly correlated predictors
+4. Engineer features: specification, interactions, polynomials, dimensionality  
+5. Compare models: Random Forest vs GLM  
+6. Testing and Evaluating
+
+## Summary {-}
+
+- Match method to your data and goals  
+- Clean and shape your data with intention  
+- Choose models that are explainable and valid  
+- Regular evaluation is essential to reliability  
 
 ## Meeting Videos {-}
 
