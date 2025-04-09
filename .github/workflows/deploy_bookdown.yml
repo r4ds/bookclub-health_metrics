@@ -8,3 +8,5 @@ on:
 jobs:
   bookdown:
     uses: r4ds/r4dsactions/.github/workflows/render_pages.yml@main
+    with:
+      extra-repositories: https://inla.r-inla-download.org/R/stable
