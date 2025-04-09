@@ -25,6 +25,6 @@ Imports:
     tidymodels,
     tidyverse
 Remotes: 
-    araastat=araastat/reprtree
+    reprtree=araastat/reprtree
 Additional_repositories: https://inla.r-inla-download.org/R/stable
 Encoding: UTF-8
