@@ -35,9 +35,20 @@
 ## Statistical and Machine Learning Methods
 
 -   Several pre-analysis steps are common to many methods
--   Exploratory Data Analysis
--   Feature Engineering / Transforming Variables
--   Centering / Scaling Variables
+
+### Exploratory Data Analysis
+
+- Aim is to understand the data
+- Descriptive statistics of central tendencies and variation
+- Basic plots of distributions / skewness (histograms)
+- Correlation plots
+
+### Feature Engineering / Transforming Variables
+
+- Reducing skew (log or other transformation)
+- Encoding category variables as dummies
+- Creating new predictor variables, interaction terms
+- Centering / Scaling Variables
 
 ## Case Study: Predicting Rabies
 
