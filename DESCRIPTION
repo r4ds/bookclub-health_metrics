@@ -13,6 +13,7 @@ Imports:
     deSolve,
     DiagrammeR,
     dials,
+    dplyr,
     ggtext,
     HistData,
     hmsidwR,
@@ -23,6 +24,7 @@ Imports:
     reprtree (>= 0.6),
     rmarkdown,
     tidymodels,
+    tidyr,
     tidyverse
 Remotes: 
     reprtree=araastat/reprtree
