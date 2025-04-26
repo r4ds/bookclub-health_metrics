@@ -2,12 +2,194 @@
 
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+- Key R-packages for ML
+- Case Studies:
+  - how to use `mlr3`
+  - how to use `keras3`
 
-## SLIDE 1 {-}
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+## Key R-packages for ML
+
+- Meta-Packages: 
+  - `tidymodels`
+  - `mlr3`
+- Engines:
+  - `xgboost`
+  - `ranger`
+  - `keras`
+- Specialized Packages for:
+  - Time Series Analysis:
+    - `forecast`
+    - `prophet`
+  - Bayesian Analysis:
+    - `brms`
+    - `rstanarm`
+  - Spatial Analysis:
+    - `INLA`
+  
+
+## How to use mlr3
+
+### DALYs due to Dengue
+
+```{r}
+#| message: false
+#| warning: false
+library(hmsidwR)
+library(dplyr)
+library(tidyr)
+```
+
+
+```{r}
+dalys_dengue <- hmsidwR::infectious_diseases %>%
+  arrange(year) %>%
+  filter(cause_name == "Dengue",
+         year<=2016,
+         !location_name %in% c("Eswatini", "Lesotho")) %>%
+  drop_na() %>%
+  group_by(location_id) %>%
+  select(-location_name, -cause_name)
+
+dalys_dengue %>%
+  head()
+```
+
+Load mlr3 packages:
+```{r}
+#| eval: false
+library(mlr3)
+library(mlr3learners)
+library(mlr3viz)
+library(mlr3verse)
+library(data.table)
+# library(xgboost)
+```
+
+Set a Task:
+```{r}
+#| eval: false
+task <- TaskRegr$new(id = "DALYs",
+                     backend = dalys_dengue,
+                     target = "DALYs"
+                     )
+```
+
+Specify two models:
+```{r}
+#| eval: false
+learner_cv_glmnet <- lrn("regr.cv_glmnet", 
+                         alpha = 0.5, 
+                         s = 0.1)
+learner_xgboost <- lrn("regr.xgboost",
+                       nrounds = 1000,
+                       max_depth = 6,
+                       eta = 0.01)
+```
+
+
+## How to use keras3
+
+keras3 is a high-level neural networks API, written in Python and capable of running on top of TensorFlow, CNTK, or Theano. It allows for easy and fast prototyping, supports both convolutional networks and recurrent networks, and runs seamlessly on CPU and GPU.
+
+### General Infection 
+
+In this example, we will use the `keras3` package to build a simple `neural network model` to predict the number of cases of a general infection based on various features.
+
+We have seen how to simulate infection with the `SEIR` model. We will use the same model function and update the parameters obtained by training a neural network model.
+
+```{r}
+#| eval: false
+install.packages("keras3")
+keras3::install_keras(backend = "tensorflow")
+```
+
+The function we will be using are:
+
+    keras_model_sequential()
+    layer_dense() 
+    layer_activation()
+    compile()  
+    fit()
+    
+The scenario is as follows:
+
+- We have a dataset with the number of cases of a general infection and various features
+
+- We build a neural network model to update the SEIR parameters based on certain social interaction features with `keras3`:
+
+      adjusted_parameters["beta"] * (1 + mean(predicted_infections))
+      
+- Apply the new model to predict the number of infections based on social interaction features
+
+### Neural Network Model
+
+Given an input vector $x=[x_1,x_2,...,x_p]$
+
+1.  **First Dense Layer Transformation**:
+
+$$
+z^{(1)}=\sum_{i=1}^p{W_i^{(1)} x_i+b^{(1)}}
+$$ 
+
+2.  **Activation Function**:
+$$
+a^{(1)}=ReLu(z^{(1)})=max(0,z^{(1)})
+$$
+3.  **Second Dense Layer Transformation**:
+$$
+z^{(2)}=\sum_{i=1}^p{W_i^{(2)} x_i+b^{(2)}}
+$$
+
+4.  **Output Activation (Sigmoid)**:
+$$
+a^{(2)}=Sigmoid(z^{(2)})= \frac{1} {1+e^{-z^{(2)}}}
+$$
+
+### Example Code
+```{r}
+#| eval: false
+model <- keras_model_sequential(input_shape = c(p))
+# simple model
+model %>%
+  layer_dense(units = 1) %>%
+  layer_activation("relu") %>%
+  layer_dense(units = 1, activation = "sigmoid")
+```
+
+Compile the model with a binary crossentropy loss function and an Adam optimizer to match the difference between original data and the model output, and apply model adjustments.
+```{r}
+#| eval: false
+model %>% compile(loss = "binary_crossentropy",
+                  optimizer = optimizer_adam(),
+                  metrics = c("accuracy"))
+```
+
+To fit the model to the data, we will use the `fit()` function, this is usually called `history`:
+```{r}
+#| eval: false
+history <- model %>% fit(x = as.matrix(social_data[, 1:p]),
+                         y = social_data$infection,
+                         epochs = 30,
+                         batch_size = 128,
+                         validation_split = 0.2
+                         )
+```
+
+History object contains the training and validation loss and accuracy for each epoch. 
+
+Finally, we adjust the output parameters of the SEIR model using the predicted values from the neural network model:
+```{r}
+#| eval: false
+adjusted_output <- ode(y = initial_state,
+                       times = times,
+                       func = SEIR,
+                       parms = adjusted_parameters
+                       )
+# Convert output to a data frame
+adjusted_output <- as.data.frame(adjusted_output)
+```
+
 
 ## Meeting Videos {-}
 
