@@ -16,6 +16,7 @@ Imports:
     deSolve,
     DiagrammeR,
     dials,
+    dplyr,
     ggpattern,
     ggtext,
     gridExtra,
@@ -29,10 +30,13 @@ Imports:
     reprtree (>= 0.6),
     rmarkdown,
     tidymodels,
+    tidyr,
     tidyverse
 Remotes: 
     reprtree=araastat/reprtree
 Additional_repositories: 
     https://inla.r-inla-download.org/R/stable
     remotes::install_github("clauswilke/colorblindr")
+    remotes::install_github("wilkelab/cowplot")
+    http://R-Forge.R-project.org
 Encoding: UTF-8
