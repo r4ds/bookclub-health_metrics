@@ -10,14 +10,20 @@ Depends:
     R (>= 3.1.0)
 Imports: 
     bookdown,
+    colorblindr,
+    colorspace,
+    cowplot,
     deSolve,
     DiagrammeR,
     dials,
+    ggpattern,
     ggtext,
+    gridExtra,
     HistData,
     hmsidwR,
     INLA,
     mgcv,
+    pacman,
     randomForest,
     ranger,
     reprtree (>= 0.6),
@@ -26,5 +32,7 @@ Imports:
     tidyverse
 Remotes: 
     reprtree=araastat/reprtree
-Additional_repositories: https://inla.r-inla-download.org/R/stable
+Additional_repositories: 
+    https://inla.r-inla-download.org/R/stable
+    remotes::install_github("clauswilke/colorblindr")
 Encoding: UTF-8
