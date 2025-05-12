@@ -10,15 +10,21 @@ Depends:
     R (>= 3.1.0)
 Imports: 
     bookdown,
+    colorblindr,
+    colorspace,
+    cowplot (>=1.1.3.9000),
     deSolve,
     DiagrammeR,
     dials,
     dplyr,
+    ggpattern,
     ggtext,
+    gridExtra,
     HistData,
     hmsidwR,
     INLA,
     mgcv,
+    pacman,
     randomForest,
     ranger,
     reprtree (>= 0.6),
@@ -27,6 +33,10 @@ Imports:
     tidyr,
     tidyverse
 Remotes: 
-    reprtree=araastat/reprtree
-Additional_repositories: https://inla.r-inla-download.org/R/stable
+    reprtree=araastat/reprtree,
+    colorblindr=clauswilke/colorblindr,
+    cowplot=wilkelab/cowplot
+Additional_repositories: 
+    https://inla.r-inla-download.org/R/stable
+    http://R-Forge.R-project.org
 Encoding: UTF-8
