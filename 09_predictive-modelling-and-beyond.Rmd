@@ -2,12 +2,79 @@
 
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+- How to use models’ predictions on new data
+- Time series analysis
+- Mixed models
 
-## SLIDE 1 {-}
+## Overview of predictive modelling
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+In this chapter we'll talk about:
+
+- the challenges of applying predictions to new data
+- the use of time series analysis, and mixed models to anticipate the trajectory of infectious diseases and health metrics.
+
+> By exploring the underlying patterns and analysing historical data, we estimate the disease burden and evaluate the impact of interventions on population health.
+
+
+## Predicting the future
+
+### Dengue Test Predictions for 2017-2021
+
+Test of the Dengue’s model made with mlr3 meta-package in Chapter 8. 
+
+
+```{r}
+#| eval: false
+new_data <- hmsidwR::infectious_diseases %>%
+  arrange(year)%>%
+  filter(cause_name == "Dengue",
+         year>=2017,
+         !location_name %in% c("Eswatini", "Lesotho")) %>%
+  drop_na() %>%
+  group_by(location_id) %>%
+  select(-location_name, -cause_name)
+```
+
+```{r}
+#| eval: false
+new_pred_regr.cv_glmnet <- 
+  rr1$learners[[1]]$predict_newdata(new_data,
+                                    task = rr1$task)
+
+new_pred_regr.xgboost <- 
+  rr2$learners[[1]]$predict_newdata(new_data,
+                                    task = rr2$task)
+```
+
+## Time series analysis
+
+> To evaluate the evolution of the phenomenon in time
+
+Time series data can show different characteristics, such as:
+
+- trend
+- seasonality
+- cyclic patterns
+- irregular fluctuations
+
+evaluation methods:
+
+- decomposition:
+  - trend
+  - seasonality
+  - random fluctuations
+- smoothing:
+  - moving average
+  - exponential smoothing
+- modelling:
+  - ARIMA
+  - Mixed models
+
+### SDI Time Series Analysis with Mixed Effect Models
+
+hands-on session
+
+
 
 ## Meeting Videos {-}
 
