@@ -25,13 +25,15 @@ Imports:
     INLA,
     mgcv,
     pacman,
+    patchwork,
     randomForest,
     ranger,
     reprtree (>= 0.6),
     rmarkdown,
     tidymodels,
     tidyr,
-    tidyverse
+    tidyverse,
+    wpp2022
 Remotes: 
     reprtree=araastat/reprtree,
     colorblindr=clauswilke/colorblindr,
