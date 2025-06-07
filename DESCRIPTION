@@ -37,8 +37,7 @@ Imports:
     terra,
     tidymodels,
     tidyr,
-    tidyverse,
-    wpp2022
+    tidyverse
 Remotes: 
     reprtree=araastat/reprtree,
     colorblindr=clauswilke/colorblindr,
