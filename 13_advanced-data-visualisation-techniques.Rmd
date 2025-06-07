@@ -152,13 +152,15 @@ We can use the `{wpp2022}` package for the population data, which provides age-s
 ```{r}
 #| warning: false
 #| message: false
+#| eval: false
 library(wpp2022)
 data(popAge1dt)
-popAge1dt %>% head()
 ```
 
+
 ```{r}
-popAge1dt %>%
+#| eval: false
+high_income_pop <- popAge1dt %>%
    select(name, year, age, popF, popM) %>%
    pivot_longer(cols = c(popM, popF), 
                 names_to = "sex", 
@@ -166,8 +168,18 @@ popAge1dt %>%
    mutate(value = ifelse(sex == "popF",
                          as.integer(population * -1),
                          as.integer(population))) %>%
-  filter(name == "High-income countries") %>% 
-  # pyramid plot
+  filter(name == "High-income countries")
+```
+
+
+```{r}
+#| echo: false
+saveRDS(high_income_pop, "data/high_income_pop.rds")
+```
+
+Pyramid plot
+```{r}
+high_income_pop %>%
   ggplot(aes(x = age, y = value, fill = sex)) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("#CC6666", "#9999CC")) +
