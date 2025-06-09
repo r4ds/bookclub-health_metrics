@@ -2,23 +2,291 @@
 
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+-   Learn how to model and visualise spatial data
+-   Understand the concepts of spatial data, spatial data models, and spatial models
+-   Create maps, simulate infections, and predict the spatial distribution of phenomena
 
-## SLIDE 1 {-}
+## Ebola
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+-   Ebola is a viral disease that can cause severe illness and death
+-   It is transmitted through direct contact with bodily fluids of infected individuals
+-   The disease is endemic in certain regions of Africa
+-   The Ebola outbreak in West Africa (2014-2016) was the largest in history
 
-## Meeting Videos {-}
 
-### Cohort 1 {-}
+<center>
+
+<iframe width="560" height="315"  src="https://www.youtube.com/embed/5Hj4akvDNSs?si=nV-zJWoF1HHxLsNx&amp;clip=Ugkx7c_Baq_DQKQo79khjcgnQ8_vI186GMIe&amp;clipt=EKaqAhj0gAM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen ></iframe> 
+<p><em>Video: Ebola Virus Disease outbreak in West Africa (2014–2016)</em></p>
+</center>
+
+## Spatial data and models
+
+-   Spatial data is data that has a geographic or spatial component
+-   It can be represented in various formats, including raster and vector data
+-   Spatial data models are used to represent and analyse spatial data
+-   Spatial models are used to predict the spatial distribution of phenomena
+
+## Make a Map
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+library(sf)
+library(rnaturalearth)
+
+africa <- ne_countries(continent = "Africa", 
+                       returnclass = "sf")
+
+
+# Africa with colours
+ggplot(data = africa) +
+  geom_sf(aes(fill=name), 
+          color= "white", 
+          linewidth = 1,
+          show.legend = F) +
+  coord_sf() +
+  ggthemes::theme_map() +
+  labs(title = "Africa",
+       subtitle = "Countries in Africa",
+       caption = "Sample data from rnaturalearth") +
+  # add north arrow
+  ggspatial::annotation_north_arrow(which_north = "true",
+                         style = ggspatial::north_arrow_fancy_orienteering()) +
+  # add scale bar
+  ggspatial::annotation_scale(location = "tr",
+                              pad_y = unit(0.1, "cm")) 
+
+```
+## Coordinate Reference System (CRS)
+
+```{r}
+st_crs(africa)
+```
+
+### Bounding Box
+```{r}
+ctr_africa <- africa %>%
+  filter(name == "Central African Rep.")
+ctr_africa %>% st_bbox()
+```
+
+
+## Grid of points
+```{r}
+#| eval: false
+df_sf <- df %>%
+  st_as_sf(coords = c("longitude","latitude"),
+           # or use crs = 4326
+           crs = "+proj=longlat +datum=WGS84") %>%
+  st_intersection(ctr_africa) %>%
+  st_make_valid()
+
+grid <- df_sf %>%
+  st_bbox() %>%
+  st_as_sfc() %>%
+  st_make_grid(what = "centers",
+               cellsize = .2,
+               square = F) 
+```
+
+## Create a Raster of the Temperature
+```{r}
+#| eval: false
+
+library(terra) 
+raster_template <- terra::rast(nrows = 18, ncols = 36,
+                          xmin = 11, xmax = 28,
+                          ymin = 2, ymax = 12,
+                          crs = st_crs(df_sf)$proj4string)
+```
+
+
+```{r}
+#| eval: false
+ctr_africa_raster <- rasterize(df_sf,
+                               raster_template,
+                               field = "temperature",
+                               fun = max)
+```
+
+## Dynamics of Disease Transmission
+
+Disease transmission can be modelled using various approaches, including:
+
+-   Compartmental models (e.g., SIR, SEIR)
+-   Agent-based models
+-   Network models
+
+### Spatial Proximity with Kriging
+
+Kriging is a geostatistical method used to predict the value of a variable at unsampled locations based on the values at sampled locations. It is particularly useful for spatial data with spatial correlation.
+
+```{r}
+#| warning: false
+#| message: false
+set.seed(21082024) # set seed for reproducibility 
+num_points <- 100
+# simulate the presence of infection 
+# 1 = "infected" and 0 = "non_infected"
+longitude <- rnorm(n = num_points, mean = 20.70, sd = 1)
+latitude <-  rnorm(n = num_points, mean = 6.294, sd = 1)
+presence <- rbinom(100, 1, prob = 0.3)  
+cases <- ifelse(presence == 1, 
+                rpois(n = num_points*0.7, lambda = 10), 0)
+temperature <- rnorm(n = num_points, 
+                     mean = 24.7, 
+                     sd = (29.2 - 20.3) / 4)
+
+# build a dataframe  
+df <- data.frame(longitude, latitude, 
+                 presence, cases, temperature) 
+
+df_sf <- df %>%
+  st_as_sf(coords = c("longitude","latitude"),
+           # or use crs = 4326
+           crs = "+proj=longlat +datum=WGS84") %>%
+  st_intersection(ctr_africa) %>%
+  st_make_valid()
+```
+
+```{r}
+#| warning: false
+#| message: false
+library(gstat)
+
+v <-  variogram(object = cases ~  temperature, data = df_sf)
+
+v_model <- fit.variogram(v, model = vgm("Sph"))
+  
+plot(v, model = v_model)
+```
+
+### Perform Kriging 
+
+to predict the spatial distribution of the variable of interest (e.g., temperature) across a grid of points in Central African Republic.
+
+```{r}
+#| warning: false
+#| message: false
+library(DescTools)
+set.seed(240724) # set seed for reproducibility
+ctr_africa_coords <- ctr_africa %>% 
+  sf::st_coordinates() %>% 
+  as.data.frame() %>% 
+  dplyr::select(X, Y) 
+bbox <- ctr_africa %>% st_bbox()
+bbox_grid <- expand_grid(x = seq(from = bbox$xmin,
+                                 to = bbox$xmax,
+                                 length.out = 100),
+                         y = seq(from = bbox$ymin,
+                                 to = bbox$ymax,
+                                 length.out = 100))
+
+ctr_africa_grid_full <- data.frame(PtInPoly(bbox_grid,
+                                            ctr_africa_coords))
+
+ctr_africa_grid <- ctr_africa_grid_full %>% 
+  filter(pip == 1)
+
+ctr_africa_grid_sf <- ctr_africa_grid %>%
+  st_as_sf(coords = c("x", "y"), crs = 4326) %>%
+  st_make_valid() %>%
+  mutate(temperature = mean(df$temperature))
+```
+
+
+```{r}
+#| warning: false
+#| message: false
+k <- gstat::gstat(formula = presence ~ temperature, 
+                  data = df_sf, 
+                  model = v_model)
+
+kpred <- predict(k, newdata = ctr_africa_grid_sf)
+
+data.frame(geo = kpred$geometry,
+           var = kpred$var1.var,
+           pred = kpred$var1.pred) %>% 
+  head()
+```
+
+
+```{r}
+#| warning: false
+#| message: false
+infected_sf <- df_sf %>%
+  filter(presence == 1) %>%
+  st_make_valid()
+```
+
+```{r}
+#| warning: false
+#| message: false
+ggplot() +
+  geom_sf(data = kpred, 
+          aes(fill = var1.pred),
+          shape=21, stroke=0.5) +
+  geom_sf(data = infected_sf) +
+  scale_fill_viridis_c() +
+  labs(title = "Kriging Prediction in Central African Rep.") +
+  theme(legend.position = "right")
+```
+
+
+```{r}
+#| warning: false
+#| message: false
+ggplot() +
+  geom_sf(data = kpred,           
+          aes(fill = var1.var),
+          shape=21, stroke=0.5) +
+  geom_sf(data = infected_sf) +
+  scale_fill_viridis_c() +
+  labs(title = "Kriging Variance in Central African Rep.") +
+  theme(legend.position = "right")
+```
+    
+    
+## Resources
+
+[R-Spatial.org](https://r-spatial.org/)
+
+### The {sf} package
+
+-   The {sf} package is used for handling spatial data in R
+-   It provides functions for reading, writing, and manipulating spatial data
+-   It supports various spatial data formats, including shapefiles, GeoJSON, and KML
+
+```{r}
+#| eval: false
+# sample important {sf} functions
+library(sf)
+
+# read shapefile
+africa <- st_read("data.shp")
+# write shapefile
+st_write(africa, "data.shp")
+
+# convert to sf object
+africa_sf <- st_as_sf(africa)
+
+```
+
+
+## Meeting Videos
+
+### Cohort 1
 
 `r knitr::include_url("https://www.youtube.com/embed/URL")`
 
 <details>
-<summary> Meeting chat log </summary>
 
-```
+<summary>Meeting chat log</summary>
+
+```         
 LOG
 ```
+
 </details>
