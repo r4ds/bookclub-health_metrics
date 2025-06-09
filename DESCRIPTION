@@ -40,11 +40,13 @@ Imports:
     terra,
     tidymodels,
     tidyr,
-    tidyverse
+    tidyverse,
+    wpp2022
 Remotes: 
     reprtree=araastat/reprtree,
     colorblindr=clauswilke/colorblindr,
-    cowplot=wilkelab/cowplot
+    cowplot=wilkelab/cowplot,
+    wpp2022=PPgp/wpp2022
 Additional_repositories: 
     https://inla.r-inla-download.org/R/stable
     http://R-Forge.R-project.org

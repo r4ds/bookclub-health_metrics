@@ -107,10 +107,10 @@ p1 <- ggplot(griddf1, aes(x, y, z = z)) +
   geom_contour(aes(colour = after_stat(level),
                    linetype = factor(after_stat(level))),
                    linewidth = 2) +
-  scale_color_viridis_c()+
-  guides(linetype = "none")+
+  scale_color_viridis_c() +
+  guides(linetype = "none") +
   labs(title="Antagonism",
-       color="Prediction", x = "x1", y = "x2")+
+       color="Prediction", x = "x1", y = "x2") +
   theme(legend.position = "top")
 
 p2 <- ggplot(griddf2, aes(x, y, z = z)) +
@@ -152,29 +152,21 @@ We can use the `{wpp2022}` package for the population data, which provides age-s
 ```{r}
 #| warning: false
 #| message: false
-#| eval: false
 library(wpp2022)
 data(popAge1dt)
 ```
 
 
 ```{r}
-#| eval: false
 high_income_pop <- popAge1dt %>%
-   select(name, year, age, popF, popM) %>%
-   pivot_longer(cols = c(popM, popF), 
-                names_to = "sex", 
-                values_to = "population") %>%
-   mutate(value = ifelse(sex == "popF",
-                         as.integer(population * -1),
-                         as.integer(population))) %>%
-  filter(name == "High-income countries")
-```
-
-
-```{r}
-#| echo: false
-saveRDS(high_income_pop, "data/high_income_pop.rds")
+  dplyr::select(name, year, age, popF, popM) %>%
+  tidyr::pivot_longer(cols = c(popM, popF), 
+                      names_to = "sex", 
+                      values_to = "population") %>%
+  dplyr::mutate(value = ifelse(sex == "popF",
+                               as.integer(population * -1),
+                               as.integer(population))) %>%
+  dplyr::filter(name == "High-income countries")
 ```
 
 Pyramid plot
@@ -186,20 +178,3 @@ high_income_pop %>%
   coord_flip() +
   theme_minimal() 
 ```
-
-
-
-
-## Meeting Videos {-}
-
-### Cohort 1 {-}
-
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
-
-<details>
-<summary> Meeting chat log </summary>
-
-```
-LOG
-```
-</details>
