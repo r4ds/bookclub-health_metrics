@@ -12,7 +12,7 @@ As we read, we are producing [notes about the book](https://dslc.io/health_metri
 
 If you would like to present, please see the sign-up sheet for your cohort (linked below, and pinned in the [#book_club-health_metrics](https://dslcio.slack.com/archives/C07L4FT9QN8) channel on Slack)!
 
-- [Cohort 1](https://docs.google.com/spreadsheets/d/1wBpJqWEmf_vS2E14f6NkEMdf0Lh_YDaAMv5yTVAc6SU/edit?usp=sharing) (started 2025-01-31, facilitated by Federica Gazzelloni she/her): [Fridays, 6:00 AM CST/CDT](https://www.timeanddate.com/worldclock/converter.html?iso=20250124T100000&p1=24&p2=1440&p3=215) | [meeting videos](https://www.youtube.com/playlist?list=PL3x6DOfs2NGgCcaYkhe5uPhw9iDIJUeZI)
+- Cohort 1 (started 2025-01-31, finished 2025-02-04): [meeting videos](https://www.youtube.com/playlist?list=PL3x6DOfs2NGgCcaYkhe5uPhw9iDIJUeZI)
 
 <hr>
 
