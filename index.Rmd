@@ -16,7 +16,7 @@ description: "This website is the product of the Data Science Learning Community
 
 Welcome to the Health Metrics and the Spread of Infectious Diseases Machine Learning Applications and Spatial Modelling Analysis with R book club!
 
-This website is a companion for the book [*Health Metrics and the Spread of Infectious Diseases Machine Learning Applications and Spatial Modelling Analysis with R*](https://bookdown.org/fede_gazzelloni/hmsidR/) by Federica Gazzelloni (copyright 2025). This companion is available at [dslc.io/health_metrics](https://dslc.io/health_metrics).
+This website is a companion for the book [*Health Metrics and the Spread of Infectious Diseases Machine Learning Applications and Spatial Modelling Analysis with R*](https://bookdown.org/fede_gazzelloni/hmsidR/) by Federica Gazzelloni (copyright 2025, available from [CRC Press](https://www.routledge.com/Health-Metrics-and-the-Spread-of-Infectious-Diseases-Machine-Learning-Applications-and--Spatial-Modelling-Analysis-with-R/Gazzelloni/p/book/9781032625782)). This companion is available at [dslc.io/health_metrics](https://dslc.io/health_metrics).
 
 This website is being developed by the [Data Science Learning Community](https://dslc.io). Follow along, and [join the community](https://dslc.io/join) to participate.
 
