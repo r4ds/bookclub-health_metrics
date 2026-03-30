@@ -3,7 +3,7 @@
 
 Welcome to the DSLC Health Metrics and the Spread of Infectious Diseases Machine Learning Applications and Spatial Modelling Analysis with R Book Club!
 
-We are working together to read [_Health Metrics and the Spread of Infectious Diseases: Machine Learning Applications and Spatial Modelling Analysis with R_](https://bookdown.org/fede_gazzelloni/hmsidR/) by Federica Gazzelloni (copyright 2025).
+We are working together to read [_Health Metrics and the Spread of Infectious Diseases: Machine Learning Applications and Spatial Modelling Analysis with R_](https://bookdown.org/fede_gazzelloni/hmsidR/) by Federica Gazzelloni (copyright 2025). If you would like a print version, please consider purchasing it using our [Amazon Affiliates link](https://amzn.to/412MoZN). All profits from purchases through that link go toward maintaining the Data Science Learning Community.
 
 Join the [#book_club-health_metrics](https://dslcio.slack.com/archives/C07L4FT9QN8) channel on the [DSLC Slack](https://dslc.io/join) to participate.
 As we read, we are producing [notes about the book](https://dslc.io/health_metrics).
